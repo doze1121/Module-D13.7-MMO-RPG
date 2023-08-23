@@ -1,0 +1,31 @@
+{% extends 'newsboard/base.html' %}
+
+{% block titile %}Добавление отклика{% endblock titile %}
+
+{% block content %}
+<div class="container-fluid">
+    <div class="card-body">
+        <div class="p-3 mb-2 bg-danger text-dark">
+            <h3><span class="badge bg-secondary float-end">{{ post.category }}</span></h3>
+            <h5 class="card-title">{{ post.title }}</h5>
+        </div>
+</div>
+    <div class="container">
+        <h2 class="mb-4 mt-5">Добавить отклик:</h2>
+
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+
+            <div class="col-12">
+                <p>{{ form.text.label_tag }}</p>
+                {{ form.text }}
+            </div>
+
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary">Добавить</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+{% endblock content %}

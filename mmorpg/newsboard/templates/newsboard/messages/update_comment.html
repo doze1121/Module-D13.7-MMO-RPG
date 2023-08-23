@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h2>Обновлен статус вашего отклика к посту {{ comment.post.title }}</h2>
+<p>
+    {{ comment.post.author }}
+    {% if instance.confirmed %}
+        принял
+    {% else %}
+        отклонил
+    {% endif %}
+    ваш отклик на его пост.
+</p>
+</body>
+</html>

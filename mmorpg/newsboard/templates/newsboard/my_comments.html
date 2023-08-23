@@ -1,0 +1,28 @@
+{% extends 'newsboard/base.html' %}
+
+{% block content %}
+<div class="row">
+    {% for post in posts %}
+        <div class="col-9">
+            <div class="card-body">
+                <a class="navbar-brand" href="{% url 'newsboard:post_comments' post.pk %}">
+                    <div class="p-3 mb-2 bg-danger text-dark">
+                        <h3><span class="badge bg-secondary float-end">{{ post.category }}</span></h3>
+                        <h5 class="card-title">{{ post.title }}</h5>
+                    </div>
+                </a>
+            </div>
+        </div>
+        <div class="col-3">
+            <a href="{% url 'newsboard:post_comments' post.pk %}">
+                <button type="button" class="btn btn-lg btn-outline-primary position-relative me-sm-3 mb-sm-3 mt-3">
+                    Отклики
+                    <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                    {{ post.comment_set.all|length }}
+                    </span>
+                </button>
+            </a>
+        </div>
+    {% endfor %}
+</div>
+{% endblock content %}

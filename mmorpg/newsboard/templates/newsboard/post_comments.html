@@ -1,0 +1,79 @@
+{% extends 'newsboard/base.html' %}
+
+{% block content %}
+
+<div class="container">
+    <div class="card-body">
+        <div class="p-3 mb-2 bg-danger text-dark">
+            <h3><span class="badge bg-secondary float-end">{{ post.category }}</span></h3>
+            <h5 class="card-title">{{ post.title }}</h5>
+        </div>
+    </div>
+    <div class="list-group mt-3 ms-3">
+        {% for comment in comments %}
+            <div class="shadow-sm p-3 mb-5 bg-body rounded">
+                <div class="d-flex w-100 justify-content-between mt-1">
+                    <h5 class="mb-1">{{ comment.author }}</h5>
+                    <small class="text-muted">{{ comment.datetime_of_creation }}</small>
+                </div>
+                <div class="row">
+                    <div class="col-9"><p class="mb-1 ms-3">{{ comment.text }}</p></div>
+                    {% if post in user.post_set.all %}
+                        {% if comment.confirmed %}
+                            <div class="col-3">
+                                <button class="btn btn-outline-success mt-2">
+                                        Подтвержден
+                                </button>
+                                <a href="{% url 'newsboard:comment_reject' post.pk comment.pk %}">
+                                    <button class="btn btn-danger mt-2">
+                                        Отклонить
+                                    </button>
+                                </a>
+                            </div>
+                        {% elif comment.confirmed is None %}
+                            <div class="col-3">
+                                <a href="{% url 'newsboard:comment_confirm' post.pk comment.pk %}">
+                                    <button class="btn btn-success mt-2">
+                                        Принять
+                                    </button>
+                                </a>
+                                <a href="{% url 'newsboard:comment_reject' post.pk comment.pk %}">
+                                    <button class="btn btn-danger mt-2">
+                                        Отклонить
+                                    </button>
+                                </a>
+                            </div>
+                        {% elif not comment.confirmed %}
+                            <div class="col-3">
+                                <button class="btn btn-outline-danger mt-2">
+                                        Отклонен
+                                </button>
+                                <a href="{% url 'newsboard:comment_confirm' post.pk comment.pk %}">
+                                    <button class="btn btn-success mt-2">
+                                        Принять
+                                    </button>
+                                </a>
+                            </div>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+        {% empty %}
+            <div class="px-4 py-5 my-5 text-center">
+                <h1 class="display-5 fw-bold">Тут пусто!</h1>
+                <div class="col-lg-6 mx-auto">
+                    <p class="lead mb-4">У данного поста пока что нет ни одного отклика.</p>
+                    <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                        <a href="{% url 'newsboard:home' %}">
+                            <button type="button" class="btn btn-primary btn-lg px-4 gap-3">
+                                К новостям
+                            </button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock content %}

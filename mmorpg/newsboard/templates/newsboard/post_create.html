@@ -1,0 +1,31 @@
+{% extends 'newsboard/base.html' %}
+{% load static %}
+
+{% block titile %}Добавление новости{% endblock titile %}
+
+{% block content %}
+
+<div class="container">
+    <h2 class="mb-5">Добавление записи:</h2>
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+        <div class="col-md-4">
+          {{ form.category.label_tag }}
+          {{ form.category }}
+        </div>
+        <div class="col-8">
+            {{ form.title.label_tag }}
+            {{ form.title }}
+        </div>
+            {{ form.text.label_tag }}
+            {{ form.text }}
+        <div class="col-12">
+            {{ form.media }}
+        </div>
+        <div class="col-12">
+            <button type="submit" class="btn btn-primary">Добавить</button>
+        </div>
+    </form>
+</div>
+
+{% endblock content %}

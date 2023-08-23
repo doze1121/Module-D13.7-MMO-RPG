@@ -1,0 +1,91 @@
+{% extends 'newsboard/base.html' %}
+
+{% block titile %}Новости{% endblock titile %}
+
+{% block content %}
+
+<div class="container-fluid ms-5">
+    {% for post in post_list %}
+        <div class="row mt-5">
+            <div class="col-lg-8">
+                <div class="shadow p-3 mb-3 bg-body rounded">
+                    <div class="card">
+                        <div class="card-body">
+                            <a class="navbar-brand" href="{% url 'newsboard:detail' post.pk %}">
+                                <div class="p-3 mb-2 bg-danger text-dark">
+                                    <h3><span class="badge bg-secondary float-end">{{ post.category }}</span></h3>
+                                    <h5 class="card-title">{{ post.title }}</h5>
+                                </div>
+                            </a>
+                            <div class="container">
+                                <p class="card-text mt-5 mb-5 ms-4 me-4">{{  post.text|safe|truncatewords:'100' }}</p>
+                                <a class="btn btn-primary mb-5" href="{% url 'newsboard:detail' post.pk %}">
+                                    Читать далее...
+                                </a>
+                            </div>
+
+                            <p class="card-text">
+                                <small class="text-muted ms-1">
+                                    Последнее обновление: {{ post.date_of_last_update }} {{ post.time_of_last_update }}
+                                </small>
+                                <span class=" ms-3 float-end">Автор: {{ post.author }}</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                    <div class="container">
+                        <div class="card me-5">
+                            <div class="card-header">Панель управления записью</div>
+                            <div class="card-body">
+                                {% if post in user.post_set.all %}
+                                    <a href="{% url 'newsboard:post_comments' post.pk %}">
+                                    <button type="button" class="btn btn-lg btn-outline-primary position-relative me-sm-3 mb-sm-3 mt-3">
+                                        Отклики
+                                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                        {{ post.comment_set.all|length }}
+                                        </span>
+                                    </button>
+                                    </a>
+                                    <a href="{% url 'newsboard:update' post.pk %}">
+                                        <button class="btn btn-lg btn-outline-primary me-sm-3 mb-sm-3 mt-3">
+                                            Редактировать
+                                        </button>
+                                    </a>
+                                    <a href="#">
+                                        <button class="btn btn-lg btn-outline-danger me-sm-3 mb-sm-3 mt-3">
+                                            Удалить
+                                        </button>
+                                    </a>
+                                {% else %}
+                                    <a href="{% url 'newsboard:comment_create' post.pk %}">
+                                        <button class="btn btn-lg btn-outline-primary me-sm-3 mb-sm-3 mt-3">
+                                            Откликнуться
+                                        </button>
+                                    </a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        </div>
+
+    {% empty %}
+        <div class="px-4 py-5 my-5 text-center">
+            <h1 class="display-5 fw-bold">Тут пусто!</h1>
+            <div class="col-lg-6 mx-auto">
+                <p class="lead mb-4">На сайте пока что нет ни одной записи. Станьте автором первой новости.</p>
+                <div class="d-grid gap-2 d-sm-flex justify-content-sm-center">
+                    <a href="{% url 'newsboard:create' %}">
+                        <button type="button" class="btn btn-primary btn-lg px-4 gap-3">
+                            Добавить новость
+                        </button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>
+
+{% endblock content %}
