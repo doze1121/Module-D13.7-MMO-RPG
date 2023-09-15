@@ -1,5 +1,3 @@
-# mmorpg_board
-
 ## Курсовой проект по Django (SkillFactory)
 
 ### Используемый стек:
